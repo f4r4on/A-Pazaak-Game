@@ -1,0 +1,285 @@
+@font-face {
+    font-family: 'Jersey 25';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: url(https://cdn.jsdelivr.net/fontsource/fonts/jersey-25@latest/latin-400-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/jersey-25@latest/latin-400-normal.woff) format('woff');
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* || VARIABLES COLOR || */
+
+:root {
+    --color-bg: #031510;
+    --color-tablero: #08392B;
+    --color-texto: #56d7b7;
+    --color-vidas: #00C891;
+    --color-huecoCartas: #05271D;
+    --color-botones: #05271D;
+    --color-lineas: #fff;
+    --font-main: 'Jersey 25', sans-serif;
+}
+
+/* || ELEMENTOS GENERALES || */
+
+*{
+    padding: 0rem;
+    margin: 0rem;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: var(--color-bg);
+    font-family: 'Jersey 25', sans-serif;
+}
+
+/* || ELEMENTOS CONTENEDOR PRINCIPAL || */
+
+.contenedorPrincipal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* || TEXTO SUPERIOR || */
+
+.header{
+    color: var(--color-texto);
+    text-align: center;
+    padding-top: 1.5rem;
+    padding-bottom: 3.125rem;
+}
+
+/* || ELEMENTOS TABLERO || */
+
+.tableroPrincipal{
+    height: auto;
+    width: 62.5rem;
+    background-color: var(--color-tablero);
+    border-radius: 0.9375rem;
+    border: 0.125rem solid #fff;
+}
+
+.tablero{
+    display: grid;
+    grid-template-columns: 1fr 0.0625rem 1fr;
+    grid-template-rows: 
+    auto
+    0.0625rem
+    1fr
+    0.0625rem
+    auto
+    0.0625rem;
+    grid-template-areas:
+    "areaA . areaB"
+    "topRow topRow topRow"
+    "zonaCartas zonaCartas zonaCartas"
+    "midRow midRow midRow"
+    "contenedorMano contenedorMano contenedorMano"
+    "botRow botRow botRow";
+    padding: 1.25rem 3.15rem;
+    row-gap: 1rem;
+    column-gap: 1rem;
+    position: relative;
+}
+
+/* || LINEA SEPARATORIA SUPERIOR || */
+
+.topRow{
+    grid-area: topRow;
+    position: static;
+    height: 0.09375rem;
+    width: 100%;
+    background: var(--color-lineas);
+}
+
+/* || LINEA SEPARATORIA VERTICAL || */
+
+.verticalRow{
+    position: absolute;
+    width: 0.0625rem;
+    top: 21px;
+    height: 580px;
+    background: var(--color-lineas);
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* || ELEMENTO VIDAS || */
+
+.vida{
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: 50%;
+}
+
+.vidasA{
+    grid-area: areaA;
+    display: flex; 
+    gap: 0.65rem; 
+    align-items: center;
+    justify-self: start;
+}
+
+.vidasB{
+    grid-area: areaB;
+    display: flex; 
+    gap: 0.65rem; 
+    align-items: center;
+    justify-self: end;
+}
+
+.vida--jugadorA, .vida--jugadorB{
+    background: var(--color-vidas);
+}
+
+/* || ELEMENTO PUNTUACION || */
+
+.puntosA{
+    grid-area: areaA;
+    justify-self: end;
+    margin-right: calc(51px - 1rem - 0.0625rem);
+    align-self: center;
+    font-size: 1.5rem;
+    color: var(--color-texto);
+}
+
+.puntosB{
+    grid-area: areaB;
+    justify-self: start;
+    margin-left:  calc(51px - 1rem - 0.0625rem);
+    align-self: center;
+    font-size: 1.5rem;
+    color: var(--color-texto);
+}
+
+/* || ZONA DE CARTAS JUGADAS || */
+
+.zonaCartas{
+    grid-area: zonaCartas;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+    position: relative;
+}
+
+.zonaCartasA, .zonaCartasB{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 1.2rem;
+}
+
+.zonaCartasA{
+    padding: 1.5rem 2.375rem 1.5625rem 0rem;
+}
+
+.zonaCartasB{
+    padding: 1.5rem 0rem 1.5625rem 2.375rem;
+}
+
+.zonaCartas .carta{
+    width: 3.75rem;
+    height: 5.375rem;
+    background: var(--color-huecoCartas);
+}
+
+/* || LINEA SEPARATORIA DEL MEDIO || */
+
+.midRow{
+    grid-area: midRow;
+    position: static;
+    background: var(--color-lineas);
+    height: 0.0625rem;
+    width: 100%;
+}
+
+/* || CARTAS DE LA MANO DEL JUGADOR || */
+
+.contenedorMano{
+    grid-area: contenedorMano;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 1rem;
+    position: relative;
+}
+
+.cartasManoA, .cartasManoB{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 1.1rem;
+}
+
+.cartasManoA{
+    justify-content: start;
+    align-items: center;
+}
+
+.cartasManoB{
+    justify-content: end;
+    align-items: center; 
+}
+
+.cartasManoA .cartaMano, .cartasManoB .cartaMano{
+    width: 3.75rem;
+    height: 5.375rem;
+    background: var(--color-huecoCartas);
+}
+
+.cartasManoA{
+    padding: 1.52rem 4.687rem 1.52rem 2.5rem;
+}
+
+.cartasManoB{
+    padding: 1.52rem 2rem 1.52rem 5.1875rem;
+}
+
+/* || LINEA SEPARATORIA FINAL || */
+
+.botRow{
+    grid-area: botRow;
+    position: static;
+    background: var(--color-lineas);
+    height: 0.09375rem;
+    width: 100%;
+}
+
+/* || BOTONES || */
+
+.contenedorBotones{
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 20px 0px 40px 83px;
+}
+
+.btn{
+    font-size: 16px;
+    width: 100px;
+    height: 35px;
+    background: var(--color-botones);
+    border-radius: 15px;
+    border: 1.5px solid #fff;
+    color: var(--color-texto);
+    cursor: pointer;
+}
+
+.btn:hover{
+    color: #fff;
+}
+
+/* || TEXTO FOOTER || */
+
+.footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5625rem;
+    color: var(--color-texto);
+    text-align: center;
+}
