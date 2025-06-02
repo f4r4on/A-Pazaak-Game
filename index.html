@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@interactjs/interactjs/index.min.js"></script>
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
     <title>A Pazaak Game</title>
@@ -26,8 +27,12 @@
                     <div class="vida vida--jugadorB"></div>
                     <div class="vida vida--jugadorB"></div>
                 </div>
-                <div class="puntosA">Puntos: 00</div>
-                <div class="puntosB">Puntos: 00</div>
+                <div id="puntosA" class="puntosA">
+                    <p>Puntos: </p>
+                </div>
+                <div id="puntosB" class="puntosB">
+                    <p>Puntos: </p>
+                </div>
                 <div class="verticalRow"></div>
                 <div class="zonaCartas">
                     <div class="zonaCartasA">
@@ -73,7 +78,7 @@
                 <div class="botRow"></div>
             </div>
             <div class="contenedorBotones">
-                <button class="btn">Pasar Turno</button>
+                <button onclick="numGenA()" class="btn">Pasar Turno</button>
                 <button class="btn">Plantarse</button>
                 <button class="btn">Reiniciar</button>
             </div>
