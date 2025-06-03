@@ -3,9 +3,10 @@ puntosA = 0;
 sumaPuntosA = 0;
 puntosB = 0;
 sumaPuntosB = 0;
+const reload = document.getElementById('reload');
+const comenzarJuego = document.getElementById('comenzarJuego');
 
-
-// || FUNCIONES ||
+// || GENERADOR DE NUMEROS ||
 
 function numGenA(){
     contenedorPuntosA = document.getElementById('puntosA').textContent;
@@ -20,18 +21,30 @@ function numGenA(){
 }
 
 function numGenB(){
-    contenedorPuntos = document.getElementById('puntosB').textContent;
+    contenedorPuntosB = document.getElementById('puntosB');
+    let formateo;
     
     if (sumaPuntosB <= 20) {
         puntosB = Math.floor(Math.random()* 10) + 1;
+        formateo = puntosB < 10 ? puntosB.toString().padStart(2, '0') : puntosB.toString();
         sumaPuntosB += puntosB;
         contenedorPuntos = sumaPuntosB;
-        document.getElementById('puntosB').textContent = 'Puntos: ' + contenedorPuntos;
+        contenedorPuntosB.textContent = 'Puntos: ' + contenedorPuntos;
     }
     return sumaPuntosB
 }
 
-function gameFlow(){
-    console.log(sumaPuntosA)
-    console.log(sumaPuntosB)
-}
+// || BOTON COMENZAR PARTIDA ||
+
+comenzarJuego.addEventListener('click', function(){
+    document.getElementById('tableroPrincipal').style.filter = 'none';
+    comenzarJuego.style.display = 'none';
+    numGenA();
+
+})
+
+// || BOTON REINICIAR PARTIDA ||
+
+reload.addEventListener('click', (_) =>{
+    location.reload();
+});

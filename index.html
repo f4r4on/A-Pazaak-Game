@@ -9,12 +9,12 @@
     <title>A Pazaak Game</title>
 </head>
 <body>
-    <div class="contenedorPrincipal">
+        <div class="contenedorPrincipal">
         <div class="header">
             <h1>A Pazaak Game</h1>
             <h4>From the Star Wars: KOTOR saga</h4>
         </div>
-        <div class="tableroPrincipal">
+        <div id="tableroPrincipal" class="tableroPrincipal">
             <div class="tablero">
                 <div class="topRow"></div>
                 <div class="vidasA">
@@ -28,10 +28,10 @@
                     <div class="vida vida--jugadorB"></div>
                 </div>
                 <div id="puntosA" class="puntosA">
-                    <p>Puntos: </p>
+                    <p>Puntos: 00</p>
                 </div>
                 <div id="puntosB" class="puntosB">
-                    <p>Puntos: </p>
+                    <p>Puntos: 00</p>
                 </div>
                 <div class="verticalRow"></div>
                 <div class="zonaCartas">
@@ -78,10 +78,13 @@
                 <div class="botRow"></div>
             </div>
             <div class="contenedorBotones">
-                <button onclick="numGenA()" class="btn">Pasar Turno</button>
+                <button onclick="numGenB()" class="btn">Pasar Turno</button>
                 <button class="btn">Plantarse</button>
-                <button class="btn">Reiniciar</button>
+                <button id="reload" class="btn">Reiniciar</button>
             </div>
+        </div>
+        <div>
+            <button id="comenzarJuego" class="btn btnEmpezar">Comezar</button>
         </div>
     </div>
     <footer>
