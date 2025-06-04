@@ -1,37 +1,38 @@
 // || VARIABLES GLOBALES ||
-puntosA = 0;
-sumaPuntosA = 0;
-puntosB = 0;
-sumaPuntosB = 0;
 const reload = document.getElementById('reload');
 const comenzarJuego = document.getElementById('comenzarJuego');
+const jugadores = {
+    A: {
+        suma: 0,
+        elemento: document.getElementById('puntosA'),
+        habilitado: false
+    },
+
+    B: {
+        suma: 0,
+        elemento: document.getElementById('puntosB'),
+        habilitado: false
+    }
+};
+let turnoActual = null;
 
 // || GENERADOR DE NUMEROS ||
 
-function numGenA(){
-    contenedorPuntosA = document.getElementById('puntosA').textContent;
-    
-    if (sumaPuntosA <= 20) {
-        puntosA = Math.floor(Math.random()* 10) + 1;
-        sumaPuntosA += puntosA;
-        contenedorPuntosA = sumaPuntosA;
-        document.getElementById('puntosA').textContent = 'Puntos: ' + contenedorPuntosA;
+function numGen(jugador){
+    const data = jugadores[jugador];
+    // if (!data.habilitado){
+    //     return false;
+    // }
+    if (data.suma <= 20){
+        const puntos = Math.floor(Math.random()* 10) + 1;
+        data.suma += puntos;
+        if (data.suma <= 9){
+            data.elemento.textContent = 'Puntos: 0' + data.suma;
+        } else {
+            data.elemento.textContent = 'Puntos: ' + data.suma;
+        }
     }
-    return sumaPuntosA
-}
-
-function numGenB(){
-    contenedorPuntosB = document.getElementById('puntosB');
-    let formateo;
-    
-    if (sumaPuntosB <= 20) {
-        puntosB = Math.floor(Math.random()* 10) + 1;
-        formateo = puntosB < 10 ? puntosB.toString().padStart(2, '0') : puntosB.toString();
-        sumaPuntosB += puntosB;
-        contenedorPuntos = sumaPuntosB;
-        contenedorPuntosB.textContent = 'Puntos: ' + contenedorPuntos;
-    }
-    return sumaPuntosB
+    return data.suma;
 }
 
 // || BOTON COMENZAR PARTIDA ||
@@ -39,8 +40,9 @@ function numGenB(){
 comenzarJuego.addEventListener('click', function(){
     document.getElementById('tableroPrincipal').style.filter = 'none';
     comenzarJuego.style.display = 'none';
-    numGenA();
-
+    setTimeout(() => {
+        numGen('A');
+    }, 500);
 })
 
 // || BOTON REINICIAR PARTIDA ||
@@ -48,3 +50,6 @@ comenzarJuego.addEventListener('click', function(){
 reload.addEventListener('click', (_) =>{
     location.reload();
 });
+
+// || GAMEFLOW ||
+
