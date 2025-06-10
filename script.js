@@ -70,6 +70,11 @@ function jugarIA(){
     if (puntosB === 20){
         jugadores.B.plantado = true;
         jugadores.B.habilitado = false;
+        let textoGanador2 = document.getElementById('texto2');
+        let ganador2 = document.getElementById('ganador2');
+        ganador2.style.background = '#08392B';
+        textoGanador2.hidden = false;
+        textoGanador2.textContent = 'Plantado'
         setTimeout(turnoA, 500);
         return;
     }
@@ -77,6 +82,11 @@ function jugarIA(){
     if (puntosB >= 17){
         jugadores.B.plantado = true;
         jugadores.B.habilitado = false;
+        let textoGanador2 = document.getElementById('texto2');
+        let ganador2 = document.getElementById('ganador2');
+        ganador2.style.background = '#08392B';
+        textoGanador2.hidden = false;
+        textoGanador2.textContent = 'Plantado'
         setTimeout(turnoA, 500);
         return;
     }
@@ -142,7 +152,7 @@ pasarTurno.addEventListener('click', function(){
     turnoB();
 });
 
-// || BOTON PASAR TURNO ||
+// || BOTON PLANTARSE ||
 
 plantarse.addEventListener('click', function(){
     if (turnoActual !== 'A' || jugadores.A.habilitado === false) return;
@@ -150,6 +160,11 @@ plantarse.addEventListener('click', function(){
     pasarTurno.disabled = true;
     plantarse.disabled = true;
     jugadores.A.habilitado = false;
+    let textoGanador1 = document.getElementById('texto1');
+    let ganador1 = document.getElementById('ganador1');
+    ganador1.style.background = '#08392B';
+    textoGanador1.hidden = false;
+    textoGanador1.textContent = 'Plantado'
     turnoB();
 });
 
@@ -172,13 +187,30 @@ function finalizarPartida(ganador){
     plantarse.disabled = true;
     switch (ganador) {
         case 'A':
-            console.log('Gana A');
+            let ganador1 = document.getElementById('ganador1');
+            let textoGanador1 = document.getElementById('texto1');
+            ganador1.style.background = '#08392B';
+            textoGanador1.textContent = '¡El Jugador 1 es el ganador!';
+            textoGanador1.hidden = false;
             break;
         case 'B':
-            console.log('Gana B');
+            let ganador2 = document.getElementById('ganador2');
+            let textoGanador2 = document.getElementById('texto2');
+            ganador2.style.background = '#08392B';
+            textoGanador2.textContent = '¡El Jugador 2 es el ganador!';
+            textoGanador2.hidden = false;
             break;
         case 'empate':
-            console.log('Empate');
+            let empate1 = document.getElementById('ganador1');
+            let textoEmpate1 = document.getElementById('texto1');
+            textoEmpate1.textContent = 'Empate'
+            empate1.style.background = '#08392B';
+            textoEmpate1.hidden = false;
+            let empate2 = document.getElementById('ganador2');
+            let textoEmpate2 = document.getElementById('texto2');
+            textoEmpate2.textContent = 'Empate'
+            empate2.style.background = '#08392B';
+            textoEmpate2.hidden = false;
             break;
     }
 }

@@ -59,7 +59,7 @@ body{
     background-color: var(--color-tablero);
     border-radius: 0.9375rem;
     border: 0.125rem solid #fff;
-    filter: blur(5px);
+    filter: blur(0.3125rem);
 }
 
 .tablero{
@@ -99,9 +99,9 @@ body{
 
 .verticalRow{
     position: absolute;
-    width: 0.0625rem;
-    top: 21px;
-    height: 580px;
+    width: 0.09375rem;
+    top: 1.3125rem;
+    height: 36.25rem;
     background: var(--color-lineas);
     justify-content: center;
     left: 50%;
@@ -255,15 +255,15 @@ body{
     display: flex;
     justify-content: flex-start;
     gap: 1rem;
-    padding: 20px 0px 40px 83px;
+    padding: 1.25rem 0rem 2.5rem 5.1875rem;
 }
 
 .btn{
     font-size: 16px;
-    width: 100px;
-    height: 35px;
+    width: 6.25rem;
+    height: 2.1875rem;
     background: var(--color-botones);
-    border-radius: 15px;
+    border-radius: 0.9375rem;
     border: 1.5px solid #fff;
     color: var(--color-texto);
     cursor: pointer;
@@ -275,9 +275,48 @@ body{
 
 .btnEmpezar{
     position: relative;
-    bottom: 360px;
-    left: 0px;
-    z-index: 1;
+    bottom: 75rem;
+    z-index: 2;
+}
+
+/* || TEXTO GANADOR || */
+
+.text{
+    font-size: 22px;
+    color: var(--color-texto);
+    position: relative;    
+}
+
+.texto1{
+    right: 1.5625rem;
+}
+
+.texto2{
+    left: 1.5625rem;
+}
+
+.ganador1{
+    position: relative;
+    right: 14.08125rem;
+    bottom: 34.9375rem;
+    width: 28.0625rem;
+    height: 27.6875rem;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ganador2{
+    position: relative;
+    left: 14.08125rem;
+    bottom: 62.625rem;
+    width: 28.0625rem;
+    height: 27.6875rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* || TEXTO FOOTER || */
