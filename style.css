@@ -4,7 +4,7 @@
     font-display: swap;
     font-weight: 400;
     src: url(https://cdn.jsdelivr.net/fontsource/fonts/jersey-25@latest/latin-400-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/jersey-25@latest/latin-400-normal.woff) format('woff');
-    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* || VARIABLES COLOR || */
@@ -22,29 +22,30 @@
 
 /* || ELEMENTOS GENERALES || */
 
-*{
+* {
     padding: 0rem;
     margin: 0rem;
     box-sizing: border-box;
 }
 
-body{
+body {
     background-color: var(--color-bg);
     font-family: 'Jersey 25', sans-serif;
 }
 
 /* || ELEMENTOS CONTENEDOR PRINCIPAL || */
 
-.contenedorPrincipal{
+.contenedorPrincipal {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
 }
 
 /* || TEXTO SUPERIOR || */
 
-.header{
+.header {
     color: var(--color-texto);
     text-align: center;
     padding-top: 1.5rem;
@@ -53,32 +54,28 @@ body{
 
 /* || ELEMENTOS TABLERO || */
 
-.tableroPrincipal{
+.tableroPrincipal {
     height: auto;
     width: 62.5rem;
     background-color: var(--color-tablero);
     border-radius: 0.9375rem;
     border: 0.125rem solid #fff;
     filter: blur(0.3125rem);
+    position: relative;
 }
 
-.tablero{
+.tablero {
     display: grid;
     grid-template-columns: 1fr 0.0625rem 1fr;
-    grid-template-rows: 
-    auto
-    0.0625rem
-    1fr
-    0.0625rem
-    auto
-    0.0625rem;
+    grid-template-rows:
+        auto 0.0625rem 1fr 0.0625rem auto 0.0625rem;
     grid-template-areas:
-    "areaA . areaB"
-    "topRow topRow topRow"
-    "zonaCartas zonaCartas zonaCartas"
-    "midRow midRow midRow"
-    "contenedorMano contenedorMano contenedorMano"
-    "botRow botRow botRow";
+        "areaA . areaB"
+        "topRow topRow topRow"
+        "zonaCartas zonaCartas zonaCartas"
+        "midRow midRow midRow"
+        "contenedorMano contenedorMano contenedorMano"
+        "botRow botRow botRow";
     padding: 1.25rem 3.15rem;
     row-gap: 1rem;
     column-gap: 1rem;
@@ -87,7 +84,7 @@ body{
 
 /* || LINEA SEPARATORIA SUPERIOR || */
 
-.topRow{
+.topRow {
     grid-area: topRow;
     position: static;
     height: 0.09375rem;
@@ -97,7 +94,7 @@ body{
 
 /* || LINEA SEPARATORIA VERTICAL || */
 
-.verticalRow{
+.verticalRow {
     position: absolute;
     width: 0.09375rem;
     top: 1.3125rem;
@@ -106,39 +103,42 @@ body{
     justify-content: center;
     left: 50%;
     transform: translateX(-50%);
+
+    z-index: 1;
 }
 
 /* || ELEMENTO VIDAS || */
 
-.vida{
+.vida {
     height: 1.25rem;
     width: 1.25rem;
     border-radius: 50%;
 }
 
-.vidasA{
+.vidasA {
     grid-area: areaA;
-    display: flex; 
-    gap: 0.65rem; 
+    display: flex;
+    gap: 0.65rem;
     align-items: center;
     justify-self: start;
 }
 
-.vidasB{
+.vidasB {
     grid-area: areaB;
-    display: flex; 
-    gap: 0.65rem; 
+    display: flex;
+    gap: 0.65rem;
     align-items: center;
     justify-self: end;
 }
 
-.vida--jugadorA, .vida--jugadorB{
+.vida--jugadorA,
+.vida--jugadorB {
     background: var(--color-vidas);
 }
 
 /* || ELEMENTO PUNTUACION || */
 
-.puntosA{
+.puntosA {
     grid-area: areaA;
     justify-self: end;
     margin-right: calc(51px - 1rem - 0.0625rem);
@@ -147,10 +147,10 @@ body{
     color: var(--color-texto);
 }
 
-.puntosB{
+.puntosB {
     grid-area: areaB;
     justify-self: start;
-    margin-left:  calc(51px - 1rem - 0.0625rem);
+    margin-left: calc(51px - 1rem - 0.0625rem);
     align-self: center;
     font-size: 1.5rem;
     color: var(--color-texto);
@@ -158,7 +158,7 @@ body{
 
 /* || ZONA DE CARTAS JUGADAS || */
 
-.zonaCartas{
+.zonaCartas {
     grid-area: zonaCartas;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -166,22 +166,23 @@ body{
     position: relative;
 }
 
-.zonaCartasA, .zonaCartasB{
+.zonaCartasA,
+.zonaCartasB {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, auto);
     gap: 1.2rem;
 }
 
-.zonaCartasA{
+.zonaCartasA {
     padding: 1.5rem 2.375rem 1.5625rem 0rem;
 }
 
-.zonaCartasB{
+.zonaCartasB {
     padding: 1.5rem 0rem 1.5625rem 2.375rem;
 }
 
-.zonaCartas .carta{
+.zonaCartas .carta {
     width: 3.75rem;
     height: 5.375rem;
     background: var(--color-huecoCartas);
@@ -189,7 +190,7 @@ body{
 
 /* || LINEA SEPARATORIA DEL MEDIO || */
 
-.midRow{
+.midRow {
     grid-area: midRow;
     position: static;
     background: var(--color-lineas);
@@ -199,7 +200,7 @@ body{
 
 /* || CARTAS DE LA MANO DEL JUGADOR || */
 
-.contenedorMano{
+.contenedorMano {
     grid-area: contenedorMano;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -208,40 +209,62 @@ body{
     position: relative;
 }
 
-.cartasManoA, .cartasManoB{
+.cartasManoA,
+.cartasManoB {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
     gap: 1.1rem;
 }
 
-.cartasManoA{
+.cartasManoA {
     justify-content: start;
     align-items: center;
 }
 
-.cartasManoB{
+.cartasManoB {
     justify-content: end;
-    align-items: center; 
+    align-items: center;
 }
 
-.cartasManoA .cartaMano, .cartasManoB .cartaMano{
+.cartasManoA .cartaMano,
+.cartasManoB .cartaMano {
     width: 3.75rem;
     height: 5.375rem;
     background: var(--color-huecoCartas);
 }
 
-.cartasManoA{
+.cartasManoA {
     padding: 1.52rem 4.687rem 1.52rem 2.5rem;
 }
 
-.cartasManoB{
+.cartasManoB {
     padding: 1.52rem 2rem 1.52rem 5.1875rem;
+}
+
+/* || HOVER CARTAS */
+
+.carta {
+    transition: background-color 0.5s;
+}
+
+.carta:hover {
+    cursor: pointer;
+    background-color: #00C891;
+}
+
+.cartaMano {
+    transition: background-color 0.5s;
+}
+
+.cartaMano:hover {
+    cursor: pointer;
+    background-color: #00C891;
 }
 
 /* || LINEA SEPARATORIA FINAL || */
 
-.botRow{
+.botRow {
     grid-area: botRow;
     position: static;
     background: var(--color-lineas);
@@ -251,14 +274,17 @@ body{
 
 /* || BOTONES || */
 
-.contenedorBotones{
+.contenedorBotones {
+    position: relative;
     display: flex;
     justify-content: flex-start;
     gap: 1rem;
     padding: 1.25rem 0rem 2.5rem 5.1875rem;
+
+    z-index: 1;
 }
 
-.btn{
+.btn {
     font-size: 16px;
     width: 6.25rem;
     height: 2.1875rem;
@@ -269,59 +295,68 @@ body{
     cursor: pointer;
 }
 
-.btn:hover{
+.btn:hover {
     color: #fff;
 }
 
-.btnEmpezar{
+.btnEmpezar {
     position: relative;
-    bottom: 75rem;
+    bottom: 300px;
     z-index: 2;
 }
 
 /* || TEXTO GANADOR || */
 
-.text{
+.text {
     font-size: 22px;
     color: var(--color-texto);
-    position: relative;    
-}
-
-.texto1{
-    right: 1.5625rem;
-}
-
-.texto2{
-    left: 1.5625rem;
-}
-
-.ganador1{
     position: relative;
-    right: 14.08125rem;
-    bottom: 34.9375rem;
-    width: 28.0625rem;
-    height: 27.6875rem;
-    
-    display: flex;
+}
+
+.ganador1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+
+    background-color: var(--color-tablero);
+
+    border-radius: 0.9375rem 0 0 0.9375rem;
+
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
-.ganador2{
-    position: relative;
-    left: 14.08125rem;
-    bottom: 62.625rem;
-    width: 28.0625rem;
-    height: 27.6875rem;
+.ganador2 {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 50%;
+    height: 100%;
 
-    display: flex;
+    background-color: var(--color-tablero);
+
+    border-radius: 0 0.9375rem 0.9375rem 0;
+
     justify-content: center;
     align-items: center;
+    text-align: center;
+}
+
+.ganador1,
+.ganador2 {
+    display: none;
+}
+
+.alwaysDisplay{
+    z-index: 1;
 }
 
 /* || TEXTO FOOTER || */
 
-.footer{
+.footer {
     position: fixed;
     bottom: 0;
     left: 0;

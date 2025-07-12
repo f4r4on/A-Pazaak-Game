@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,87 +9,91 @@
     <link rel="stylesheet" href="style.css">
     <title>A Pazaak Game</title>
 </head>
+
 <body>
-        <div class="contenedorPrincipal">
+    <div class="contenedorPrincipal">
         <div class="header">
             <h1>A Pazaak Game</h1>
             <h4>From the Star Wars: KOTOR saga</h4>
         </div>
         <div id="tableroPrincipal" class="tableroPrincipal">
             <div class="tablero">
-                <div class="topRow"></div>
-                <div class="vidasA">
+                <div class="topRow alwaysDisplay"></div>
+                <div class="vidasA alwaysDisplay">
                     <div class="vida vida--jugadorA"></div>
                     <div class="vida vida--jugadorA"></div>
                     <div class="vida vida--jugadorA"></div>
                 </div>
-                <div class="vidasB">
+                <div class="vidasB alwaysDisplay">
                     <div class="vida vida--jugadorB"></div>
                     <div class="vida vida--jugadorB"></div>
                     <div class="vida vida--jugadorB"></div>
                 </div>
-                <div id="puntosA" class="puntosA">
+                <div id="puntosA" class="puntosA alwaysDisplay">
                     <p>Puntos: 00</p>
                 </div>
-                <div id="puntosB" class="puntosB">
+                <div id="puntosB" class="puntosB alwaysDisplay">
                     <p>Puntos: 00</p>
                 </div>
-                <div class="verticalRow"></div>
+                <div class="verticalRow alwaysDisplay"></div>
                 <div class="zonaCartas">
                     <div class="zonaCartasA">
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
+                        <div class="carta" id="a1"></div>
+                        <div class="carta" id="a2"></div>
+                        <div class="carta" id="a3"></div>
+                        <div class="carta" id="a4"></div>
+                        <div class="carta" id="a5"></div>
+                        <div class="carta" id="a6"></div>
+                        <div class="carta" id="a7"></div>
+                        <div class="carta" id="a8"></div>
+                        <div class="carta" id="a9"></div>
+                        <div class="carta" id="a10"></div>
                     </div>
                     <div class="zonaCartasB">
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
-                        <div class="carta"></div>
+                        <div class="carta" id="b1"></div>
+                        <div class="carta" id="b2"></div>
+                        <div class="carta" id="b3"></div>
+                        <div class="carta" id="b4"></div>
+                        <div class="carta" id="b5"></div>
+                        <div class="carta" id="b6"></div>
+                        <div class="carta" id="b7"></div>
+                        <div class="carta" id="b8"></div>
+                        <div class="carta" id="b9"></div>
+                        <div class="carta" id="b10"></div>
                     </div>
                 </div>
                 <div class="midRow"></div>
                 <div class="contenedorMano">
                     <div class="cartasManoA">
-                        <div class="cartaMano"></div>
-                        <div class="cartaMano"></div>
-                        <div class="cartaMano"></div>
-                        <div class="cartaMano"></div>
+                        <div class="cartaMano" id="ma1"></div>
+                        <div class="cartaMano" id="ma2"></div>
+                        <div class="cartaMano" id="ma3"></div>
+                        <div class="cartaMano" id="ma4"></div>
                     </div>
                     <div class="cartasManoB">
-                        <div class="cartaMano"></div>
-                        <div class="cartaMano"></div>
-                        <div class="cartaMano"></div>
-                        <div class="cartaMano"></div>
+                        <div class="cartaMano" id="mb1"></div>
+                        <div class="cartaMano" id="mb2"></div>
+                        <div class="cartaMano" id="mb3"></div>
+                        <div class="cartaMano" id="mb4"></div>
                     </div>
                 </div>
                 <div class="botRow"></div>
             </div>
-            <div class="contenedorBotones">
+            <div class="contenedorBotones alwaysDisplay">
                 <button id="pasarTurno" class="btn">Pasar Turno</button>
                 <button id="plantarse" class="btn">Plantarse</button>
                 <button id="reload" class="btn">Reiniciar</button>
             </div>
+
+            <!-- DISPLAY GANADORES -->
+            <div id="ganador1" class="ganador1">
+                <p id="texto1" class="text texto1">¡El Jugador 1 es el ganador!</p>
+            </div>
+            <div id="ganador2" class="ganador2">
+                <p id="texto2" class="text texto2">¡El Jugador 2 es el ganador!</p>
+            </div>
         </div>
-        <div id="ganador1" class="ganador1">
-            <p id="texto1" class="text texto1" hidden>¡El Jugador 1 es el ganador!</p>
-        </div>
-        <div id="ganador2" class="ganador2">
-            <p id="texto2" class="text texto2" hidden>¡El Jugador 2 es el ganador!</p>
-        </div>
+
         <div>
             <button id="comenzarJuego" class="btn btnEmpezar">Comezar</button>
         </div>
@@ -99,4 +104,5 @@
         </div>
     </footer>
 </body>
+
 </html>
