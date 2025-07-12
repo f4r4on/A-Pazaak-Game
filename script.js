@@ -25,6 +25,8 @@ const jugadores = {
 };
 const listaHuecosCartas = document.querySelectorAll('.carta');
 const listaHuecosCartasMano = document.querySelectorAll('.cartaMano');
+const listaHuecosCartasA = document.querySelectorAll('.zcA');
+const listaHuecosCartasB = document.querySelectorAll('.zcB');
 
 let cartaSeleccionada1 = "";
 let cartaSeleccionada2 = "";
@@ -67,12 +69,43 @@ function numGen(jugador) {
     if (data.suma <= 20) {
         const puntos = Math.floor(Math.random() * 10) + 1;
         data.suma += puntos;
+        let tempPuntos = 0;
+        if (jugador == "A") {
+            for (const card of listaHuecosCartasA) {
+                if (card.textContent == "") {
+                    card.textContent = puntos;
+                    tempPuntos += parseInt(card.textContent, 10);
+                    console.log(tempPuntos)
+                    data.elemento.textContent = 'Puntos: ' + tempPuntos;
+                    return tempPuntos;
+                } else {
+                    tempPuntos += parseInt(card.textContent, 10);
+                }
+            }
+        }
+
+        if (jugador == "B") {
+            for (const card of listaHuecosCartasB) {
+                if (card.textContent == "") {
+                    card.textContent = puntos;
+                    tempPuntos += parseInt(card.textContent, 10);
+                    console.log(tempPuntos)
+                    data.elemento.textContent = 'Puntos: ' + tempPuntos;
+                    return tempPuntos;
+                } else {
+                    tempPuntos += parseInt(card.textContent, 10);
+                }
+            }
+        }
+
+
         if (data.suma <= 9) {
             data.elemento.textContent = 'Puntos: 0' + data.suma;
         } else {
             data.elemento.textContent = 'Puntos: ' + data.suma;
         }
     }
+
     return data.suma;
 }
 
@@ -87,6 +120,7 @@ reload.addEventListener('click', (_) => {
 function jugarIA() {
     if (!jugadores.B.habilitado || jugadores.B.plantado) return;
     const puntosB = numGen('B');
+    asignarImagenCartas()
 
     if (puntosB > 20) {
         finalizarPartida('A');
@@ -137,6 +171,7 @@ function turnoA() {
     plantarse.disabled = true;
 
     const puntosA = numGen('A')
+    asignarImagenCartas()
     jugadores.A.habilitado = true;
     jugadores.B.habilitado = false;
 
@@ -212,6 +247,37 @@ comenzarJuego.addEventListener('click', function () {
         turnoA();
     }, 500);
 })
+
+// || ASIGNAR CARTAS ||
+
+function asignarImagenCartas() {
+    for (const card of listaHuecosCartasA) {
+        if (card.textContent != "" && card.children.length === 0) {
+            const contenedor = document.getElementById(card.id); // el div donde quieres agregarla
+            console.log(contenedor)
+            const img = document.createElement("img");
+            const imgName = ("green-" + card.textContent + ".png");
+            img.src = "img/green/" + imgName;
+            img.alt = "";
+            img.className = "cardImage";
+
+            contenedor.appendChild(img);
+        }
+    }
+    for (const card of listaHuecosCartasB) {
+        if (card.textContent != "" && card.children.length === 0) {
+            const contenedor = document.getElementById(card.id); // el div donde quieres agregarla
+            console.log(contenedor)
+            const img = document.createElement("img");
+            const imgName = ("green-" + card.textContent + ".png");
+            img.src = "img/green/" + imgName;
+            img.alt = "";
+            img.className = "cardImage";
+
+            contenedor.appendChild(img);
+        }
+    }
+}
 
 // || FINALIZAR PARTIDA ||
 

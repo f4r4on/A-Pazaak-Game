@@ -245,6 +245,8 @@ body {
 /* || HOVER CARTAS */
 
 .carta {
+    display: flex;
+    position: relative;
     transition: background-color 0.5s;
 }
 
@@ -254,6 +256,8 @@ body {
 }
 
 .cartaMano {
+    display: flex;
+    position: relative;
     transition: background-color 0.5s;
 }
 
@@ -261,6 +265,22 @@ body {
     cursor: pointer;
     background-color: #00C891;
 }
+
+.cardImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+    transition: transform 0.25s;
+}
+
+.cardImage:hover {
+    transform: scale(1.1);
+
+}
+
 
 /* || LINEA SEPARATORIA FINAL || */
 
@@ -350,9 +370,10 @@ body {
     display: none;
 }
 
-.alwaysDisplay{
+.alwaysDisplay {
     z-index: 1;
 }
+
 
 /* || TEXTO FOOTER || */
 
