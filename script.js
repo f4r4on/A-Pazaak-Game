@@ -8,6 +8,8 @@ const listaHuecosCartas = document.querySelectorAll('.carta');
 const listaHuecosCartasMano = document.querySelectorAll('.cartaMano');
 const listaHuecosCartasA = document.querySelectorAll('.zcA');
 const listaHuecosCartasB = document.querySelectorAll('.zcB');
+const listaHuecosManoA = document.querySelectorAll('.cmA');
+const listaHuecosManoB = document.querySelectorAll('.cmB');
 let cartaSeleccionada1 = "";
 let cartaSeleccionada2 = "";
 let cartaSeleccionadaTemp = "";
@@ -18,7 +20,8 @@ const jugadores = {
         habilitado: false,
         plantado: false,
         ganador: false,
-        vidas: 3
+        vidas: 3,
+        cartas: 0
     },
 
     B: {
@@ -27,11 +30,12 @@ const jugadores = {
         habilitado: false,
         plantado: false,
         ganador: false,
-        vidas: 3
+        vidas: 3,
+        cartas: 0
     }
 };
 
-// || RECUPERAR LOS HUECOS DE LAS CARTAS PARA USARLOS ||
+// || RECUPERAR LOS HUECOS DE LAS CARTAS ||
 
 listaHuecosCartas.forEach(card => {
     card.addEventListener('click', () => {
@@ -62,6 +66,7 @@ function numGen(jugador) {
         const puntos = Math.floor(Math.random() * 10) + 1;
         data.suma += puntos;
         let tempPuntos = 0;
+
         if (jugador == "A") {
             for (const card of listaHuecosCartasA) {
                 if (card.textContent == "") {
@@ -88,7 +93,6 @@ function numGen(jugador) {
             }
         }
 
-
         if (data.suma <= 9) {
             data.elemento.textContent = 'Puntos: 0' + data.suma;
         } else {
@@ -98,6 +102,55 @@ function numGen(jugador) {
 
     return data.suma;
 }
+
+// || GENERAR CARTAS MANO ||
+
+function handCarGen(jugador) {
+    const data = jugadores[jugador];
+    while (data.cartas < 4) {
+        const valorCarta = Math.floor(Math.random() * 6) + 1;
+        data.cartas++;
+        
+        if (jugador == 'A') {
+            console.log("Jugador recibe:", valorCarta);
+        }
+
+        if (jugador == 'B') {
+            console.log("IA recibe:", valorCarta);
+        }
+    }
+}
+
+// || ASIGNAR CARTAS TABLERO ||
+
+function asignarImagenCartas() {
+    for (const card of listaHuecosCartasA) {
+        if (card.textContent != "" && card.children.length === 0) {
+            const contenedor = document.getElementById(card.id);
+            const img = document.createElement("img");
+            const imgName = ("green-" + card.textContent + ".png");
+            img.src = "img/green/" + imgName;
+            img.alt = "";
+            img.className = "cardImage";
+            contenedor.appendChild(img);
+        }
+    }
+    for (const card of listaHuecosCartasB) {
+        if (card.textContent != "" && card.children.length === 0) {
+            const contenedor = document.getElementById(card.id);
+            const img = document.createElement("img");
+            const imgName = ("green-" + card.textContent + ".png");
+            img.src = "img/green/" + imgName;
+            img.alt = "";
+            img.className = "cardImage";
+            contenedor.appendChild(img);
+        }
+    }
+}
+
+// || ASIGNAR CARTAS MANO ||
+
+
 
 // || BOTON REINICIAR PARTIDA ||
 
@@ -231,43 +284,14 @@ plantarse.addEventListener('click', function () {
 // || BOTON COMENZAR PARTIDA ||
 
 comenzarJuego.addEventListener('click', function () {
+    handCarGen('A');
+    handCarGen('B');
     document.getElementById('tableroPrincipal').style.filter = 'none';
     comenzarJuego.style.display = 'none';
     setTimeout(() => {
         turnoA();
     }, 500);
 })
-
-// || ASIGNAR CARTAS ||
-
-function asignarImagenCartas() {
-    for (const card of listaHuecosCartasA) {
-        if (card.textContent != "" && card.children.length === 0) {
-            const contenedor = document.getElementById(card.id); // el div donde quieres agregarla
-            console.log(contenedor)
-            const img = document.createElement("img");
-            const imgName = ("green-" + card.textContent + ".png");
-            img.src = "img/green/" + imgName;
-            img.alt = "";
-            img.className = "cardImage";
-
-            contenedor.appendChild(img);
-        }
-    }
-    for (const card of listaHuecosCartasB) {
-        if (card.textContent != "" && card.children.length === 0) {
-            const contenedor = document.getElementById(card.id); // el div donde quieres agregarla
-            console.log(contenedor)
-            const img = document.createElement("img");
-            const imgName = ("green-" + card.textContent + ".png");
-            img.src = "img/green/" + imgName;
-            img.alt = "";
-            img.className = "cardImage";
-
-            contenedor.appendChild(img);
-        }
-    }
-}
 
 // || FINALIZAR PARTIDA ||
 
@@ -311,7 +335,5 @@ function finalizarPartida(ganador) {
             console.log("Ganador E")
             break;
     }
-
-
 }
 
