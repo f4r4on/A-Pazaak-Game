@@ -21,7 +21,7 @@ const jugadores = {
         plantado: false,
         ganador: false,
         vidas: 3,
-        cartas: 0
+        cartas: []
     },
 
     B: {
@@ -31,7 +31,7 @@ const jugadores = {
         plantado: false,
         ganador: false,
         vidas: 3,
-        cartas: 0
+        cartas: []
     }
 };
 
@@ -107,9 +107,9 @@ function numGen(jugador) {
 
 function handCarGen(jugador) {
     const data = jugadores[jugador];
-    while (data.cartas < 4) {
+    while (data.cartas.length < 4) {
         const valorCarta = Math.floor(Math.random() * 6) + 1;
-        data.cartas++;
+        data.cartas.push(valorCarta);
         
         if (jugador == 'A') {
             console.log("Jugador recibe:", valorCarta);
@@ -150,7 +150,28 @@ function asignarImagenCartas() {
 
 // || ASIGNAR CARTAS MANO ||
 
+function asignarImagenCartasMano(){
+    for (const card of listaHuecosManoA){
+        if (card.textContent != "" && card.children.length === 0){
+            const contenedor = document.getElementById(card.id);
+            const img = document.createElement('img');
+            const imgName = ("blue-" + card.textContent + ".png");
+            img.src = 'img/blue/' + imgName;
+            img.alt = '';
+            img.className = 'cardImage';
+            contenedor.appendChild(img);
+        }
+    }
+}
 
+function escribirCartasEnMano(jugador){
+    if (jugador !== 'A') return;
+    const lista = listaHuecosManoA;
+    const cartas = jugadores[jugador].cartas;
+    for (let i = 0; i < cartas.length; i++){
+        lista[i].textContent = cartas[i];
+    }
+}
 
 // || BOTON REINICIAR PARTIDA ||
 
@@ -286,6 +307,9 @@ plantarse.addEventListener('click', function () {
 comenzarJuego.addEventListener('click', function () {
     handCarGen('A');
     handCarGen('B');
+    escribirCartasEnMano('A');
+    escribirCartasEnMano('B');
+    asignarImagenCartasMano();
     document.getElementById('tableroPrincipal').style.filter = 'none';
     comenzarJuego.style.display = 'none';
     setTimeout(() => {
