@@ -4,6 +4,13 @@ const reload = document.getElementById('reload');
 const comenzarJuego = document.getElementById('comenzarJuego');
 const pasarTurno = document.getElementById('pasarTurno');
 const plantarse = document.getElementById('plantarse');
+const listaHuecosCartas = document.querySelectorAll('.carta');
+const listaHuecosCartasMano = document.querySelectorAll('.cartaMano');
+const listaHuecosCartasA = document.querySelectorAll('.zcA');
+const listaHuecosCartasB = document.querySelectorAll('.zcB');
+let cartaSeleccionada1 = "";
+let cartaSeleccionada2 = "";
+let cartaSeleccionadaTemp = "";
 const jugadores = {
     A: {
         suma: 0,
@@ -23,35 +30,20 @@ const jugadores = {
         vidas: 3
     }
 };
-const listaHuecosCartas = document.querySelectorAll('.carta');
-const listaHuecosCartasMano = document.querySelectorAll('.cartaMano');
-const listaHuecosCartasA = document.querySelectorAll('.zcA');
-const listaHuecosCartasB = document.querySelectorAll('.zcB');
-
-let cartaSeleccionada1 = "";
-let cartaSeleccionada2 = "";
-let cartaSeleccionadaTemp = "";
 
 // || RECUPERAR LOS HUECOS DE LAS CARTAS PARA USARLOS ||
 
 listaHuecosCartas.forEach(card => {
     card.addEventListener('click', () => {
-        console.log("ID de la tarjeta:", card.id);
 
         if (cartaSeleccionada1 == "") {
             cartaSeleccionada1 = card.id;
-
-            console.log("Carta 1 seleccionada: ", card.id)
         }
         else if (cartaSeleccionada2 == "") {
             cartaSeleccionada2 = card.id;
-
-            console.log("Carta 2 seleccionada: ", card.id)
         } else {
             cartaSeleccionada1 = "";
             cartaSeleccionada2 = "";
-
-            console.log("Carta 1 y 2 borradas")
         }
     });
 });
@@ -75,7 +67,6 @@ function numGen(jugador) {
                 if (card.textContent == "") {
                     card.textContent = puntos;
                     tempPuntos += parseInt(card.textContent, 10);
-                    console.log(tempPuntos)
                     data.elemento.textContent = 'Puntos: ' + tempPuntos;
                     return tempPuntos;
                 } else {
@@ -89,7 +80,6 @@ function numGen(jugador) {
                 if (card.textContent == "") {
                     card.textContent = puntos;
                     tempPuntos += parseInt(card.textContent, 10);
-                    console.log(tempPuntos)
                     data.elemento.textContent = 'Puntos: ' + tempPuntos;
                     return tempPuntos;
                 } else {
