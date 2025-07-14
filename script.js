@@ -52,12 +52,6 @@ listaHuecosCartas.forEach(card => {
     });
 });
 
-listaHuecosCartasMano.forEach(card => {
-    card.addEventListener('click', () => {
-        console.log("ID de la tarjeta:", card.id);
-    });
-});
-
 // || GENERADOR DE NUMEROS ||
 
 function numGen(jugador) {
@@ -72,10 +66,17 @@ function numGen(jugador) {
                 if (card.textContent == "") {
                     card.textContent = puntos;
                     tempPuntos += parseInt(card.textContent, 10);
-                    data.elemento.textContent = 'Puntos: ' + tempPuntos;
+                    if (tempPuntos <= 9){
+                        data.elemento.textContent = 'Puntos: 0' + tempPuntos;
+                    } else {
+                        data.elemento.textContent = 'Puntos: ' + tempPuntos;
+                    }
                     return tempPuntos;
                 } else {
                     tempPuntos += parseInt(card.textContent, 10);
+                    if (tempPuntos < 0){
+                        tempPuntos = 0;
+                    }
                 }
             }
         }
@@ -85,18 +86,16 @@ function numGen(jugador) {
                 if (card.textContent == "") {
                     card.textContent = puntos;
                     tempPuntos += parseInt(card.textContent, 10);
-                    data.elemento.textContent = 'Puntos: ' + tempPuntos;
+                    if (tempPuntos <= 9){
+                        data.elemento.textContent = 'Puntos: 0' + tempPuntos;
+                    } else {
+                        data.elemento.textContent = 'Puntos: ' + tempPuntos;
+                    }
                     return tempPuntos;
                 } else {
                     tempPuntos += parseInt(card.textContent, 10);
                 }
             }
-        }
-
-        if (data.suma <= 9) {
-            data.elemento.textContent = 'Puntos: 0' + data.suma;
-        } else {
-            data.elemento.textContent = 'Puntos: ' + data.suma;
         }
     }
 
@@ -108,7 +107,8 @@ function numGen(jugador) {
 function handCarGen(jugador) {
     const data = jugadores[jugador];
     while (data.cartas.length < 4) {
-        const valorCarta = Math.floor(Math.random() * 6) + 1;
+        const signo = Math.random() < 0.5 ? 1 : -1;
+        const valorCarta = (Math.floor(Math.random() * 6) + 1) * signo;
         data.cartas.push(valorCarta);
         
         if (jugador == 'A') {
@@ -154,9 +154,11 @@ function asignarImagenCartasMano(){
     for (const card of listaHuecosManoA){
         if (card.textContent != "" && card.children.length === 0){
             const contenedor = document.getElementById(card.id);
+            const valor = parseInt(card.textContent, 10);
+            const color = valor > 0 ? 'blue' : 'red';
+            const nombre = Math.abs(valor);
             const img = document.createElement('img');
-            const imgName = ("blue-" + card.textContent + ".png");
-            img.src = 'img/blue/' + imgName;
+            img.src = `img/${color}/${color}-${nombre}.png`;
             img.alt = '';
             img.className = 'cardImage';
             contenedor.appendChild(img);
@@ -173,11 +175,72 @@ function escribirCartasEnMano(jugador){
     }
 }
 
-// || BOTON REINICIAR PARTIDA ||
+// || JUGAR CARTAS MANO ||
 
-reload.addEventListener('click', (_) => {
-    location.reload();
-});
+function jugarCartasMano(){
+    listaHuecosManoA.forEach(card => {
+        card.addEventListener('click', () =>{
+            const valor = parseInt(card.textContent, 10);
+
+            if (!jugadores.A.habilitado) return;
+            if (card.textContent === '') return;
+            if (isNaN(valor)) return;
+
+            jugadores.A.suma += valor;
+
+            if (jugadores.A.suma < 0){
+                jugadores.A.suma = 0;
+            }
+
+            jugadores.A.elemento.textContent = jugadores.A.suma < 10
+                ? 'Puntos: 0' + jugadores.A.suma
+                : 'Puntos: ' + jugadores.A.suma;
+            
+            for (const hueco of listaHuecosCartasA){
+                if (hueco.textContent === ''){
+                    hueco.textContent = valor;
+                    const color = valor > 0 ? 'blue' : 'red';
+                    const nombre = Math.abs(valor);
+                    const img = document.createElement("img");
+                    img.src = `img/${color}/${color}-${nombre}.png`;
+                    img.alt = "";
+                    img.className = "cardImage";
+                    hueco.appendChild(img);
+                    break;
+                }
+            }
+            card.textContent = "";
+            card.innerHTML = "";
+
+            const i = jugadores.A.cartas.indexOf(valor);
+            if (i !== -1) {
+                jugadores.A.cartas.splice(i, 1);
+            }
+
+            if (jugadores.A.suma > 20) {
+                finalizarPartida('B');
+                return;
+            }
+
+            if (jugadores.A.suma === 20) {
+                jugadores.A.plantado = true;
+                jugadores.A.habilitado = false;
+                let textoGanador1 = document.getElementById('texto1');
+                let ganador1 = document.getElementById('ganador1');
+                ganador1.style.background = '#08392B';
+                ganador1.style.display = 'flex';
+                textoGanador1.textContent = 'Plantado';
+                setTimeout(turnoB, 500);
+            }
+
+            listaHuecosManoA.forEach(c => {
+                c.style.pointerEvents = 'none';
+            })
+
+            setTimeout(turnoB, 500);
+        });
+    });
+}
 
 // || BUCLE IA ||
 
@@ -247,12 +310,21 @@ function turnoA() {
     if (puntosA === 20) {
         jugadores.A.plantado = true;
         jugadores.A.habilitado = false;
+        let textoGanador1 = document.getElementById('texto1');
+        let ganador1 = document.getElementById('ganador1');
+        ganador1.style.background = '#08392B';
+        ganador1.style.display = 'flex';
+        textoGanador1.textContent = 'Plantado'
         setTimeout(turnoB, 500);
         return;
     }
 
     pasarTurno.disabled = false;
     plantarse.disabled = false;
+
+    listaHuecosManoA.forEach(c => {
+        c.style.pointerEvents = 'auto';
+    })
 }
 
 function turnoB() {
@@ -302,6 +374,12 @@ plantarse.addEventListener('click', function () {
     turnoB();
 });
 
+// || BOTON REINICIAR PARTIDA ||
+
+reload.addEventListener('click', (_) => {
+    location.reload();
+});
+
 // || BOTON COMENZAR PARTIDA ||
 
 comenzarJuego.addEventListener('click', function () {
@@ -310,6 +388,7 @@ comenzarJuego.addEventListener('click', function () {
     escribirCartasEnMano('A');
     escribirCartasEnMano('B');
     asignarImagenCartasMano();
+    jugarCartasMano();
     document.getElementById('tableroPrincipal').style.filter = 'none';
     comenzarJuego.style.display = 'none';
     setTimeout(() => {
@@ -360,4 +439,3 @@ function finalizarPartida(ganador) {
             break;
     }
 }
-
