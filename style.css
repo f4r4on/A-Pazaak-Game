@@ -136,6 +136,11 @@ body {
     background: var(--color-vidas);
 }
 
+.vida--perdida {
+    background-color: #d32f2f; /* Rojo fuerte */
+    opacity: 0.6;
+}
+
 /* || ELEMENTO PUNTUACION || */
 
 .puntosA {

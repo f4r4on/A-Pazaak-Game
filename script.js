@@ -236,8 +236,6 @@ function jugarCartasMano(){
             listaHuecosManoA.forEach(c => {
                 c.style.pointerEvents = 'none';
             })
-
-            setTimeout(turnoB, 500);
         });
     });
 }
@@ -254,16 +252,6 @@ function jugarIA() {
         return;
     }
 
-    if (jugadores.A.plantado) {
-        if (puntosB > jugadores.A.suma) {
-            finalizarPartida('B');
-            return;
-        } else {
-            setTimeout(jugarIA, 500);
-        }
-        return;
-    }
-
     if (puntosB === 20) {
         jugadores.B.plantado = true;
         jugadores.B.habilitado = false;
@@ -274,6 +262,19 @@ function jugarIA() {
         textoGanador2.textContent = 'Plantado'
         setTimeout(turnoA, 500);
         return;
+    }
+
+    if (jugadores.A.plantado) {
+        if (puntosB > jugadores.A.suma) {
+            finalizarPartida('B');
+            return;
+        } else if (puntosB === jugadores.A.suma){
+            finalizarPartida('empate');
+            return;
+        } else {
+            setTimeout(jugarIA, 500);
+            return
+        }
     }
 
     if (puntosB >= 17) {
@@ -290,9 +291,14 @@ function jugarIA() {
     setTimeout(turnoA, 500);
 }
 
-// || TURNOS ||
+// || TURNOS A Y B ||
 
 function turnoA() {
+    if (jugadores.A.plantado) {
+        setTimeout(turnoB, 500);
+        return;
+    }
+
     turnoActual = 'A';
     pasarTurno.disabled = true;
     plantarse.disabled = true;
@@ -301,11 +307,6 @@ function turnoA() {
     asignarImagenCartas()
     jugadores.A.habilitado = true;
     jugadores.B.habilitado = false;
-
-    if (puntosA > 20) {
-        finalizarPartida('B');
-        return;
-    }
 
     if (puntosA === 20) {
         jugadores.A.plantado = true;
@@ -371,7 +372,12 @@ plantarse.addEventListener('click', function () {
     ganador1.style.background = '#08392B';
     ganador1.style.display = 'flex';
     textoGanador1.textContent = 'Plantado'
-    turnoB();
+    
+    if (jugadores.A.suma > 20){
+        finalizarPartida('B');
+        return
+    }
+    setTimeout(turnoB, 500);
 });
 
 // || BOTON REINICIAR PARTIDA ||
@@ -396,6 +402,84 @@ comenzarJuego.addEventListener('click', function () {
     }, 500);
 })
 
+// || QUITAR VIDAS VISUAL ||
+
+function quitarVidas(jugador){
+    const vidasRestantes = jugadores[jugador].vidas;
+    const clase = jugador === 'A' ? 'vida--jugadorA' : 'vida--jugadorB';
+    const vidas = document.querySelectorAll(`.${clase}`);
+
+    for (let i = 0; i < vidas.length; i++){
+        if (i >= vidasRestantes){
+            vidas[i].classList.add('vida--perdida');
+        } else {
+            vidas[i].classList.remove('vida--perdida');
+        }
+    }
+}
+
+// || BUCLE DE PARTIDAS ||
+
+function reiniciarRonda(){
+    jugadores.A.suma = 0;
+    jugadores.A.plantado = false;
+    jugadores.A.habilitado = false;
+    jugadores.A.elemento.textContent = 'Puntos: 00';
+
+    jugadores.B.suma = 0;
+    jugadores.B.plantado = false;
+    jugadores.B.habilitado = false;
+    jugadores.B.elemento.textContent = 'Puntos: 00';
+
+    [...listaHuecosCartasA, ...listaHuecosCartasB].forEach(card => {
+        card.textContent = '';
+        card.innerHTML = '';
+    });
+
+    listaHuecosManoA.forEach(card => {
+    card.textContent = '';
+    card.innerHTML = '';
+    card.style.pointerEvents = 'auto';
+    });
+
+    document.getElementById('ganador1').style.display = 'none';
+    document.getElementById('ganador2').style.display = 'none';
+
+    escribirCartasEnMano('A');
+    asignarImagenCartasMano('A');
+    
+    escribirCartasEnMano('B');
+    asignarImagenCartasMano('B');
+    
+    jugarCartasMano();
+    setTimeout(turnoA, 500);
+}
+
+// || RESULTADO FINAL PARTIDA ||
+
+function mostrarGanadorFinal(ganador) {
+    if (ganador === 'A') {
+        let bloque = document.getElementById('ganador1');
+        let texto = document.getElementById('texto1');
+        bloque.style.display = 'flex';
+        bloque.style.background = '#08392B';
+        texto.textContent = '¡Has ganado la partida!';
+    } else if (ganador === 'B') {
+        let bloque = document.getElementById('ganador2');
+        let texto = document.getElementById('texto2');
+        bloque.style.display = 'flex';
+        bloque.style.background = '#08392B';
+        texto.textContent = '¡El Jugador 2 es el ganador!';
+    }
+
+    pasarTurno.disabled = true;
+    plantarse.disabled = true;
+
+    [...listaHuecosManoA, ...listaHuecosManoB].forEach(card => {
+        card.style.pointerEvents = 'none';
+    });
+}
+
 // || FINALIZAR PARTIDA ||
 
 function finalizarPartida(ganador) {
@@ -403,6 +487,15 @@ function finalizarPartida(ganador) {
     jugadores.B.habilitado = false;
     pasarTurno.disabled = true;
     plantarse.disabled = true;
+
+    if (ganador === 'A'){
+        jugadores.B.vidas--;
+        quitarVidas('B');
+    } else if (ganador === 'B'){
+        jugadores.A.vidas--;
+        quitarVidas('A');
+    }
+
     switch (ganador) {
         case 'A':
             let ganador1 = document.getElementById('ganador1');
@@ -410,8 +503,6 @@ function finalizarPartida(ganador) {
             ganador1.style.display = 'flex';
             ganador1.style.background = '#08392B';
             textoGanador1.textContent = '¡El Jugador 1 es el ganador!';
-
-            console.log("Ganador A")
             break;
         case 'B':
             let ganador2 = document.getElementById('ganador2');
@@ -419,8 +510,6 @@ function finalizarPartida(ganador) {
             ganador2.style.display = 'flex';
             ganador2.style.background = '#08392B';
             textoGanador2.textContent = '¡El Jugador 2 es el ganador!';
-
-            console.log("Ganador B")
             break;
         case 'empate':
             let empate1 = document.getElementById('ganador1');
@@ -433,9 +522,24 @@ function finalizarPartida(ganador) {
             empate2.style.display = 'flex';
             textoEmpate2.textContent = 'Empate'
             empate2.style.background = '#08392B';
-
-
-            console.log("Ganador E")
             break;
     }
+
+    if (jugadores.A.vidas <= 0) {
+        setTimeout(() => {
+            mostrarGanadorFinal('B');
+        }, 1000);
+        return;
+    }
+
+    if (jugadores.B.vidas <= 0) {
+        setTimeout(() => {
+            mostrarGanadorFinal('A');
+        }, 1000);
+        return;
+    }
+
+    setTimeout(() => {
+        reiniciarRonda();
+    }, 1500);
 }
