@@ -291,6 +291,14 @@ function jugarIA() {
     setTimeout(turnoA, 500);
 }
 
+// || RESALTADO DE TURNO ||
+
+function resaltarTurno(jugador){
+    jugadores.A.elemento.classList.remove('turno-activo');
+    jugadores.B.elemento.classList.remove('turno-activo');
+    jugadores[jugador].elemento.classList.add('turno-activo');
+}
+
 // || TURNOS A Y B ||
 
 function turnoA() {
@@ -300,6 +308,7 @@ function turnoA() {
     }
 
     turnoActual = 'A';
+    resaltarTurno('A');
     pasarTurno.disabled = true;
     plantarse.disabled = true;
 
@@ -330,6 +339,7 @@ function turnoA() {
 
 function turnoB() {
     turnoActual = 'B';
+    resaltarTurno('B');
     jugadores.A.habilitado = false;
     jugadores.B.habilitado = true;
     if (jugadores.B.plantado) {

@@ -22,8 +22,8 @@
 
 - [x] ✅ Creación manual de cartas pixel-art.
 - [x] ✅ Creación del layaout básico del juego.
-- [ ] 🚧 Lógica básica y loop jugable.
-- [ ] 📅 IA básica del oponente.
+- [x] ✅ Lógica básica y loop jugable.
+- [ ] 🚧 IA básica del oponente.
 - [ ] 📅 Hostear el proyecto.
 
 ## Versión final del proyecto:

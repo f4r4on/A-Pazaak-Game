@@ -161,6 +161,14 @@ body {
     color: var(--color-texto);
 }
 
+/* || RESALTACION DE TURNO || */
+
+.turno-activo {
+    outline: 3px solid #FFD700;
+    outline-offset: 4px;
+    border-radius: 0.5rem;
+}
+
 /* || ZONA DE CARTAS JUGADAS || */
 
 .zonaCartas {
