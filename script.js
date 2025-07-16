@@ -150,10 +150,9 @@ function asignarImagenCartas() {
 
 // || ASIGNAR CARTAS MANO ||
 
-function asignarImagenCartasMano(){
-    for (const card of listaHuecosManoA){
-        if (card.textContent != "" && card.children.length === 0){
-            const contenedor = document.getElementById(card.id);
+function asignarImagenCartasMano() {
+    listaHuecosManoA.forEach((card, i) => {
+        if (card.textContent !== "" && card.children.length === 0) {
             const valor = parseInt(card.textContent, 10);
             const color = valor > 0 ? 'blue' : 'red';
             const nombre = Math.abs(valor);
@@ -161,17 +160,32 @@ function asignarImagenCartasMano(){
             img.src = `img/${color}/${color}-${nombre}.png`;
             img.alt = '';
             img.className = 'cardImage';
-            contenedor.appendChild(img);
+            card.appendChild(img);
         }
-    }
+    });
+
+    listaHuecosManoB.forEach((card) => {
+        if (card.textContent !== "" && card.children.length === 0) {
+            const img = document.createElement('img');
+            img.src = 'img/enemy/grey.png';
+            img.alt = '';
+            img.className = 'cardImage';
+            card.appendChild(img);
+        }
+    });
 }
 
-function escribirCartasEnMano(jugador){
-    if (jugador !== 'A') return;
-    const lista = listaHuecosManoA;
+function escribirCartasEnMano(jugador) {
+    const lista = jugador === 'A' ? listaHuecosManoA : listaHuecosManoB;
     const cartas = jugadores[jugador].cartas;
-    for (let i = 0; i < cartas.length; i++){
-        lista[i].textContent = cartas[i];
+
+    for (let i = 0; i < lista.length; i++) {
+        lista[i].textContent = "";
+        lista[i].innerHTML = "";
+
+        if (cartas[i] !== undefined) {
+            lista[i].textContent = cartas[i];
+        }
     }
 }
 
@@ -242,12 +256,87 @@ function jugarCartasMano(){
 
 // || BUCLE IA ||
 
+function aplicarCartaIA(valorCarta){
+    jugadores.B.suma += valorCarta;
+
+    if (jugadores.B.suma < 0){
+        jugadores.B.suma = 0;
+    }
+
+    jugadores.B.elemento.textContent = jugadores.B.suma < 10
+        ? 'Puntos: 0' + jugadores.B.suma
+        : 'Puntos: ' + jugadores.B.suma;
+
+    for (const hueco of listaHuecosCartasB){
+        if (hueco.textContent === ''){
+            hueco.textContent = valorCarta;
+            const color = valorCarta > 0 ? 'blue' : 'red';
+            const nombre = Math.abs(valorCarta);
+            const img = document.createElement('img');
+            img.src = `img/${color}/${color}-${nombre}.png`;
+            img.alt = "";
+            img.className = "cardImage";
+            hueco.appendChild(img);
+            break
+        }
+    }
+
+    const index = jugadores.B.cartas.indexOf(valorCarta);
+    if (index !== -1){
+        jugadores.B.cartas.splice(index, 1);
+    }
+}
+
 function jugarIA() {
     if (!jugadores.B.habilitado || jugadores.B.plantado) return;
     const puntosB = numGen('B');
     asignarImagenCartas()
 
+    if (jugadores.A.plantado && puntosB > jugadores.A.suma && puntosB <= 20) {
+        jugadores.B.plantado = true;
+        jugadores.B.habilitado = false;
+        let textoGanador2 = document.getElementById('texto2');
+        let ganador2 = document.getElementById('ganador2');
+        ganador2.style.background = '#08392B';
+        ganador2.style.display = 'flex';
+        textoGanador2.textContent = 'Plantado';
+        setTimeout(turnoA, 500);
+        return;
+    }
+
     if (puntosB > 20) {
+        const cartaNegativa = jugadores.B.cartas.find(c => c < 0 && (puntosB + c) <= 20);
+        if (cartaNegativa !== undefined) {
+            aplicarCartaIA(cartaNegativa);
+            escribirCartasEnMano('B');
+            asignarImagenCartasMano();
+
+            if (jugadores.B.suma === 20) {
+                jugadores.B.plantado = true;
+                jugadores.B.habilitado = false;
+                let textoGanador2 = document.getElementById('texto2');
+                let ganador2 = document.getElementById('ganador2');
+                ganador2.style.background = '#08392B';
+                ganador2.style.display = 'flex';
+                textoGanador2.textContent = 'Plantado';
+                setTimeout(turnoA, 500);
+                return;
+            }
+
+            if (jugadores.A.plantado && jugadores.B.suma > jugadores.A.suma && jugadores.B.suma <= 20) {
+                jugadores.B.plantado = true;
+                jugadores.B.habilitado = false;
+                let textoGanador2 = document.getElementById('texto2');
+                let ganador2 = document.getElementById('ganador2');
+                ganador2.style.background = '#08392B';
+                ganador2.style.display = 'flex';
+                textoGanador2.textContent = 'Plantado';
+                setTimeout(turnoA, 500);
+                return;
+            }
+            setTimeout(jugarIA, 500);
+            return;
+        }
         finalizarPartida('A');
         return;
     }
@@ -264,28 +353,114 @@ function jugarIA() {
         return;
     }
 
-    if (jugadores.A.plantado) {
-        if (puntosB > jugadores.A.suma) {
-            finalizarPartida('B');
-            return;
-        } else if (puntosB === jugadores.A.suma){
-            finalizarPartida('empate');
-            return;
-        } else {
-            setTimeout(jugarIA, 500);
-            return
-        }
-    }
-
-    if (puntosB >= 17) {
+    const cartaExacta = jugadores.B.cartas.find(c => puntosB + c === 20);
+    if (cartaExacta !== undefined) {
+        aplicarCartaIA(cartaExacta);
         jugadores.B.plantado = true;
         jugadores.B.habilitado = false;
         let textoGanador2 = document.getElementById('texto2');
         let ganador2 = document.getElementById('ganador2');
         ganador2.style.background = '#08392B';
         ganador2.style.display = 'flex';
-        textoGanador2.textContent = 'Plantado'
+        textoGanador2.textContent = 'Plantado';
         setTimeout(turnoA, 500);
+        return;
+    }
+
+    if (jugadores.A.plantado) {
+        
+        if (jugadores.B.suma < 14) {
+            setTimeout(jugarIA, 500);
+            return;
+        }
+
+        if (jugadores.A.suma === 20) {
+            const puedeEmpatar = jugadores.B.cartas.some(carta => (jugadores.B.suma + carta) === 20);
+            if (puedeEmpatar) {
+                const cartaEmpate = jugadores.B.cartas.find(carta => (jugadores.B.suma + carta) === 20);
+                aplicarCartaIA(cartaEmpate);
+                escribirCartasEnMano('B');
+                asignarImagenCartasMano();
+                jugadores.B.plantado = true;
+                jugadores.B.habilitado = false;
+                let textoGanador2 = document.getElementById('texto2');
+                let ganador2 = document.getElementById('ganador2');
+                ganador2.style.background = '#08392B';
+                ganador2.style.display = 'flex';
+                textoGanador2.textContent = 'Plantado';
+                setTimeout(turnoA, 500);
+                return;
+            } else {
+                // No puede empatar ahora, pero puede esperar cartas automáticas
+                setTimeout(jugarIA, 500);
+                return;
+            }
+        }
+
+        for (const carta of jugadores.B.cartas) {
+            const simulado = puntosB + carta;
+            if (simulado > jugadores.A.suma && simulado <= 20) {
+                aplicarCartaIA(carta);
+                escribirCartasEnMano('B');
+                asignarImagenCartasMano();
+
+                if (jugadores.B.suma > jugadores.A.suma && jugadores.B.suma <= 20) {
+                    jugadores.B.plantado = true;
+                    jugadores.B.habilitado = false;
+                    let textoGanador2 = document.getElementById('texto2');
+                    let ganador2 = document.getElementById('ganador2');
+                    ganador2.style.background = '#08392B';
+                    ganador2.style.display = 'flex';
+                    textoGanador2.textContent = 'Plantado';
+                    setTimeout(turnoA, 500);
+                    return;
+                }
+                setTimeout(jugarIA, 500);
+                return;
+            }
+        }
+
+        if (puntosB < jugadores.A.suma && puntosB < 20) {
+            setTimeout(jugarIA, 500);
+            return;
+        }
+
+        jugadores.B.plantado = true;
+        jugadores.B.habilitado = false;
+        let textoGanador2 = document.getElementById('texto2');
+        let ganador2 = document.getElementById('ganador2');
+        ganador2.style.background = '#08392B';
+        ganador2.style.display = 'flex';
+        textoGanador2.textContent = 'Plantado';
+        setTimeout(turnoA, 500);
+        return;
+    }
+
+    if (puntosB >= 17) {
+        if (!jugadores.A.plantado) {
+            jugadores.B.plantado = true;
+            jugadores.B.habilitado = false;
+            let textoGanador2 = document.getElementById('texto2');
+            let ganador2 = document.getElementById('ganador2');
+            ganador2.style.background = '#08392B';
+            ganador2.style.display = 'flex';
+            textoGanador2.textContent = 'Plantado';
+            setTimeout(turnoA, 500);
+            return;
+        }
+
+        if (puntosB >= jugadores.A.suma) {
+            jugadores.B.plantado = true;
+            jugadores.B.habilitado = false;
+            let textoGanador2 = document.getElementById('texto2');
+            let ganador2 = document.getElementById('ganador2');
+            ganador2.style.background = '#08392B';
+            ganador2.style.display = 'flex';
+            textoGanador2.textContent = 'Plantado';
+            setTimeout(turnoA, 500);
+            return;
+        }
+        setTimeout(jugarIA, 500);
         return;
     }
     setTimeout(turnoA, 500);

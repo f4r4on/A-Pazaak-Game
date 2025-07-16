@@ -137,8 +137,7 @@ body {
 }
 
 .vida--perdida {
-    background-color: #d32f2f; /* Rojo fuerte */
-    opacity: 0.6;
+    background-color: #b62e24;
 }
 
 /* || ELEMENTO PUNTUACION || */
@@ -360,6 +359,8 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
+
+    opacity: 0.9;
 }
 
 .ganador2 {
@@ -376,6 +377,8 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
+
+    opacity: 0.9;
 }
 
 .ganador1,
